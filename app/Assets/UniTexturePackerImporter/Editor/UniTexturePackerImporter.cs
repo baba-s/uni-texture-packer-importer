@@ -44,7 +44,8 @@ namespace UniTexturePackerImporterEditor
 			importer.textureType		= TextureImporterType.Sprite;
 			importer.spriteImportMode	= SpriteImportMode.Multiple;
 
-			var spritesheet = new List<SpriteMetaData>();
+			var spritesheet		= importer.spritesheet;
+			var newSpritesheet	= new List<SpriteMetaData>();
 
 			for ( int i = 0; i < frames.Length; i++ )
 			{
@@ -56,17 +57,22 @@ namespace UniTexturePackerImporterEditor
 				// TexturePacker と Unity で座標の原点が違うのでここで補正
 				rect.y = meta.size.h - rect.y - rect.height;
 
+				// パッキングし直した時に前回設定した border の情報が消えないようにここで復元
+				var currentSpriteMetaData	= spritesheet.FirstOrDefault( c => c.name == name );
+				var border					= currentSpriteMetaData.border;
+
 				var spriteMetaData = new SpriteMetaData
 				{
-					name		= name	,
-					rect		= rect	,
-					alignment	= 0		,
-					pivot		= pivot	,
+					name		= name		,
+					rect		= rect		,
+					alignment	= 0			,
+					pivot		= pivot		,
+					border		= border	,
 				};
-				spritesheet.Add( spriteMetaData );
+				newSpritesheet.Add( spriteMetaData );
 			}
 
-			importer.spritesheet = spritesheet.ToArray();
+			importer.spritesheet = newSpritesheet.ToArray();
 
 			EditorUtility.SetDirty( importer );
 			AssetDatabase.ImportAsset( texturePath );
@@ -193,6 +199,9 @@ namespace UniTexturePackerImporterEditor
 			string[] movedFromAssetPaths
 		)
 		{
+			// バッチモードの時は起動しないように
+			if ( Application.isBatchMode ) return;
+
 			if ( settings == null )
 			{
 				Debug.LogWarning( "UniTexturePackerImporterSettings.asset が存在しません" );
