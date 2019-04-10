@@ -31,4 +31,4 @@ TexturePacker でパッキングしたテクスチャを管理するフォルダ
 ![](https://cdn-ak.f.st-hatena.com/images/fotolife/b/baba_s/20190410/20190410200448.png)
 
 そして、TexturePacker でテクスチャをパッキングして Unity プロジェクトに出力すると、  
-出力されたテクスチャに分割されたスプライトが設定された状態でインポートされます  
+スプライトが分割された状態でインポートされます  
