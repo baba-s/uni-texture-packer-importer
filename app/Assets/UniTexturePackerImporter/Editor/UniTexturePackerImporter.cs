@@ -202,19 +202,11 @@ namespace UniTexturePackerImporterEditor
 			// バッチモードの時は起動しないように
 			if ( Application.isBatchMode ) return;
 
-			if ( settings == null )
-			{
-				Debug.LogWarning( "UniTexturePackerImporterSettings.asset が存在しません" );
-				return;
-			}
+			if ( settings == null ) return;
 
 			var pathList = settings.PathList;
 
-			if ( pathList == null || pathList.Length <= 0 )
-			{
-				Debug.LogWarning( "UniTexturePackerImporterSettings.asset の Path List が設定されていません", settings );
-				return;
-			}
+			if ( pathList == null || pathList.Length <= 0 )  return;
 
 			var atlasDataList = importedAssets
 				.Where( c => pathList.Any( p => c.Contains( p ) ) )
